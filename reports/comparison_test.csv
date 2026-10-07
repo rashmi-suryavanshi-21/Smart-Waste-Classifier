@@ -1,0 +1,2 @@
+model,split,accuracy,macro_f1,trash_f1,params_millions
+mobilenetv2,test,0.8526,0.8472,0.8,2.27

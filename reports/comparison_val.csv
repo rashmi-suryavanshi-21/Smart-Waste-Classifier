@@ -1,0 +1,3 @@
+model,split,accuracy,macro_f1,trash_f1,params_millions
+baseline,val,0.5383,0.5103,0.3261,0.09
+mobilenetv2,val,0.8786,0.8596,0.7179,2.27
