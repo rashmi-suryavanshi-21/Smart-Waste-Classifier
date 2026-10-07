@@ -6,6 +6,7 @@ Image classification of waste into 6 classes using transfer learning (MobileNetV
 -  Phase 1: Setup and data 
 -  Phase 2: Model training and comparison 
 -  Phase 3: Error analysis 
+-  Phase 4: SQL analytics
  
 ## Dataset (TrashNet) 
 - 2,527 images, 6 classes: cardboard, glass, metal, paper, plastic, trash 
@@ -40,3 +41,8 @@ Most errors are glass misclassified as metal (12 of 76 test images). Reviewing t
 - Near-duplicate photos of the same object may appear in both train and test (possible data leakage), so the test score may be slightly optimistic. 
 - TrashNet has plain backgrounds, so performance on cluttered real-world photos is likely lower. 
 - The trash class has only 20 test images, so its scores are unstable. 
+
+## SQL analytics
+Predictions are stored in a SQLite database (3 tables: waste_classes, images, predictions; standard SQL, portable to MySQL/PostgreSQL). Queries in `database/queries.sql` cover per-class accuracy, most common confusions, and accuracy by confidence band.
+
+Key finding: predictions with confidence >= 0.8 are 90.7% correct (321 images), while those below 0.8 are only about 56% correct (59 images). A "low confidence, please check manually" rule is a practical safeguard.
