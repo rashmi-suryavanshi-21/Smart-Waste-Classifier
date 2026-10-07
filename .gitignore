@@ -3,4 +3,5 @@ data/
 models/*.keras
 __pycache__/
 .ipynb_checkpoints/
-kaggle.json
+kaggle.jsondatabase/waste.db
+database/waste.db
