@@ -8,7 +8,7 @@ Image classification of waste into 6 classes using transfer learning (MobileNetV
 -  Phase 3: Error analysis 
 -  Phase 4: SQL analytics
 -  Phase 5: Streamlit app
- 
+-  Phase 6: Power BI dashboard
 ## Dataset (TrashNet) 
 - 2,527 images, 6 classes: cardboard, glass, metal, paper, plastic, trash 
 - Imbalanced: trash has 137 images vs paper with 594 (about 4.3x) 
@@ -49,6 +49,11 @@ Run: `streamlit run app/app.py` (from the project root; needs `models/mobilenetv
 
 ## Out-of-distribution inputs
 The model only knows 6 waste classes and has no "not waste" option. In the Streamlit app, a landscape photo was classified as "metal" (90% confidence) and a plush cushion as "cardboard" (100% confidence). The 0.8 confidence threshold does not catch such cases. Future improvement: add a "not waste / other" class or an out-of-distribution detector.
+
+## Power BI dashboard
+Built on `reports/powerbi_export.csv`, which is exported from the SQLite database. It shows overall accuracy (85.3%), accuracy per class, a confusion matrix, and accuracy by confidence band, with a class slicer. The dashboard file is in `dashboards/waste_dashboard.pbix`.
+
+![Dashboard](reports/figures/dashboard.png)
 
 ## Limitations 
 - Near-duplicate photos of the same object may appear in both train and test (possible data leakage), so the test score may be slightly optimistic. 
