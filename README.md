@@ -7,6 +7,7 @@ Image classification of waste into 6 classes using transfer learning (MobileNetV
 -  Phase 2: Model training and comparison 
 -  Phase 3: Error analysis 
 -  Phase 4: SQL analytics
+-  Phase 5: Streamlit app
  
 ## Dataset (TrashNet) 
 - 2,527 images, 6 classes: cardboard, glass, metal, paper, plastic, trash 
@@ -37,12 +38,20 @@ Most errors are glass misclassified as metal (12 of 76 test images). Reviewing t
  
 ![Glass predicted as metal](reports/figures/glass_as_metal.png) 
  
-## Limitations 
-- Near-duplicate photos of the same object may appear in both train and test (possible data leakage), so the test score may be slightly optimistic. 
-- TrashNet has plain backgrounds, so performance on cluttered real-world photos is likely lower. 
-- The trash class has only 20 test images, so its scores are unstable. 
 
 ## SQL analytics
 Predictions are stored in a SQLite database (3 tables: waste_classes, images, predictions; standard SQL, portable to MySQL/PostgreSQL). Queries in `database/queries.sql` cover per-class accuracy, most common confusions, and accuracy by confidence band.
 
 Key finding: predictions with confidence >= 0.8 are 90.7% correct (321 images), while those below 0.8 are only about 56% correct (59 images). A "low confidence, please check manually" rule is a practical safeguard.
+
+## Streamlit app
+Run: `streamlit run app/app.py` (from the project root; needs `models/mobilenetv2.keras`). Supports image upload and webcam. Predictions below 0.8 confidence show an "unsure" warning. Webcam input requires browser camera permission.
+
+## Out-of-distribution inputs
+The model only knows 6 waste classes and has no "not waste" option. In the Streamlit app, a landscape photo was classified as "metal" (90% confidence) and a plush cushion as "cardboard" (100% confidence). The 0.8 confidence threshold does not catch such cases. Future improvement: add a "not waste / other" class or an out-of-distribution detector.
+
+## Limitations 
+- Near-duplicate photos of the same object may appear in both train and test (possible data leakage), so the test score may be slightly optimistic. 
+- TrashNet has plain backgrounds, so performance on cluttered real-world photos is likely lower. 
+- The trash class has only 20 test images, so its scores are unstable. 
+- The app's preprocessing was verified by re-running the full test set through the same code path (85.0% vs 85.3% in evaluation). Accuracy drops on webcam photos with cluttered backgrounds because of domain shift from TrashNet's plain backgrounds.
