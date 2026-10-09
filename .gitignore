@@ -1,6 +1,5 @@
 venv/
 data/
-models/*.keras
 __pycache__/
 .ipynb_checkpoints/
 kaggle.jsondatabase/waste.db
